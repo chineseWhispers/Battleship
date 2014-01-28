@@ -1,0 +1,329 @@
+    AREA dig_out, CODE, READONLY
+;--------------------OVERVIEW------------------------
+; This file contains ARM Assembly language functions to set
+; designated pins to General Purpose Output.  It uses
+; the PINSELx Register to Set the Pin Function to GPIO.
+; Then, it uses the FIOxDIR register to set the
+; direction of the pin to output. It also contains functions
+; to write a digital HIGH or LOW to these output pins. It uses
+; the FIOxCLR AND FIOxSET registers to clear/set the
+; port bits respectively.  Refer to the Pinnames.h
+; file to see which LPC1768 pins a given mbed module is
+; connected to.  Then, refer to Chapters 8 and 9 of the
+; LPC1768 User Manual to acquire information on the GPIO
+; registers and their addresses.
+;
+; Example:
+; LED1 is on GPIO port 1 bit 18 according to Pinnames.h
+; For this bit: -the PINSEL3 register determines its pin function
+;               -the FIO1DIR register determines its pin direction
+; According to the LPC1768 User Manual: -PINSEL3 is located at 0x4002C00C
+;                                       -FIO1DIR is located at 0x2009C020
+; Now refer to the dig_out_LED1 function below to see the execution
+;------------------------------------------------------
+;
+; EXPORT FUNCTION LOCATION SO THAT C-COMPILER CAN LINK
+    EXPORT dig_out_LED1
+dig_out_LED1
+;========dig_out_LED1========
+; LED1 LOCATED AT PORT-1 PIN-18
+    LDR     R0, =0x4002C00C ; LOAD ADDRESS OF PINSEL3 REGISTER
+    MOV.W   R1, #0x00040000 ; MOVE BIT MASK (FOR BIT 18) INTO TEMP REGISTER (0x40000 = 0x01 << 18)
+;                           ; NOTE: THE ABOVE IS A 32-BIT INSTRUCTION BC OF ".W" QUALIFIER
+    LDR     R2, =0x2009C020 ; LOAD ADDRESS OF FIO1DIR REGISTER
+    MOV     R3, #0x30       ; FORM BITMASK FOR PINSEL3 REGISTER (clear appropriate bits)   
+    B       dig_out_exec    ; CALL SUBROUTINE TO EXECUTE YOUR CHANGES     
+;
+;
+;
+; EXPORT FUNCTION LOCATION SO THAT C-COMPILER CAN LINK
+    EXPORT LED1_write
+LED1_write
+;========LED1_write=========
+; LED1 LOCATED AT PORT-1 PIN-18 
+    LDR     R1, =0x2009C020 ; LOAD ADDRESS OF FIO1DIR (PORT 1 BASE REGISTER)
+    MOV.W   R2, #0x040000   ; MOVE BIT MASK (FOR BIT 18) INTO TEMP REGISTER (0x40000 = 0x01 << 18)
+    B       write_exec      ; CALL SUBROUTINE TO EXECUTE YOUR CHANGES
+;
+;
+;
+; EXPORT FUNCTION LOCATION SO THAT C-COMPILER CAN LINK
+    EXPORT dig_out_LED2
+dig_out_LED2
+;========dig_out_LED2========
+; LED2 LOCATED AT PORT-1 PIN-20
+    LDR     R0, =0x4002C00C ; LOAD ADDRESS OF PINSEL3 REGISTER
+    LDR     R1, =0x00100000 ; MOVE BIT MASK (FOR BIT 20) INTO TEMP REGISTER (0x100000 = 0x01 << 20)
+    LDR     R2, =0x2009C020 ; LOAD ADDRESS OF FIO1DIR REGISTER
+    MOV.W   R3, #0x300      ; FORM BITMASK FOR PINSEL3 REGISTER (clear appropriate bits)
+;                           ; NOTE: THE ABOVE IS A 32-BIT INSTRUCTION BC OF ".W" QUALIFIER   
+    B       dig_out_exec    ; CALL SUBROUTINE TO EXECUTE YOUR CHANGES     
+;
+;
+;
+; EXPORT FUNCTION LOCATION SO THAT C-COMPILER CAN LINK
+    EXPORT LED2_write
+LED2_write
+;========LED2_write=========
+; LED2 LOCATED AT PORT-1 PIN-20 
+    LDR     R1, =0x2009C020 ; LOAD ADDRESS OF FIO1DIR (PORT 1 BASE REGISTER)
+    LDR     R2, =0x0100000  ; MOVE BIT MASK (FOR BIT 20) INTO TEMP REGISTER (0x100000 = 0x01 << 20)
+    B       write_exec      ; CALL SUBROUTINE TO EXECUTE YOUR CHANGES
+;
+;
+;
+; EXPORT FUNCTION LOCATION SO THAT C-COMPILER CAN LINK
+    EXPORT dig_out_LED3
+dig_out_LED3
+;========dig_out_LED3========
+; LED3 LOCATED AT PORT-1 PIN-21
+    LDR     R0, =0x4002C00C ; LOAD ADDRESS OF PINSEL3 REGISTER
+    LDR     R1, =0x00200000 ; MOVE BIT MASK (FOR BIT 21) INTO TEMP REGISTER (0x200000 = 0x01 << 21)
+    LDR     R2, =0x2009C020 ; LOAD ADDRESS OF FIO1DIR REGISTER
+    MOV.W   R3, #0xC00      ; FORM BITMASK FOR PINSEL3 REGISTER (clear appropriate bits)
+;                           ; NOTE: THE ABOVE IS A 32-BIT INSTRUCTION BC OF ".W" QUALIFIER   
+    B       dig_out_exec    ; CALL SUBROUTINE TO EXECUTE YOUR CHANGES     
+;
+;
+;
+; EXPORT FUNCTION LOCATION SO THAT C-COMPILER CAN LINK
+    EXPORT LED3_write
+LED3_write
+;========LED3_write=========
+; LED3 LOCATED AT PORT-1 PIN-21 
+    LDR     R1, =0x2009C020 ; LOAD ADDRESS OF FIO1DIR (PORT 1 BASE REGISTER)
+    LDR     R2, =0x0200000  ; MOVE BIT MASK (FOR BIT 21) INTO TEMP REGISTER (0x200000 = 0x01 << 21)
+    B       write_exec      ; CALL SUBROUTINE TO EXECUTE YOUR CHANGES
+;
+;
+;
+; EXPORT FUNCTION LOCATION SO THAT C-COMPILER CAN LINK
+    EXPORT dig_out_LED4
+dig_out_LED4
+;========dig_out_LED4========
+; LED4 LOCATED AT PORT-1 PIN-23
+    LDR     R0, =0x4002C00C ; LOAD ADDRESS OF PINSEL3 REGISTER
+    LDR     R1, =0x00800000 ; MOVE BIT MASK (FOR BIT 23) INTO TEMP REGISTER (0x800000 = 0x01 << 23)
+    LDR     R2, =0x2009C020 ; LOAD ADDRESS OF FIO1DIR REGISTER
+    MOV.W   R3, #0xC000     ; FORM BITMASK FOR PINSEL3 REGISTER (clear appropriate bits)
+;                           ; NOTE: THE ABOVE IS A 32-BIT INSTRUCTION BC OF ".W" QUALIFIER   
+    B       dig_out_exec    ; CALL SUBROUTINE TO EXECUTE YOUR CHANGES     
+;
+;
+;
+; EXPORT FUNCTION LOCATION SO THAT C-COMPILER CAN LINK
+    EXPORT LED4_write
+LED4_write
+;========LED4_write=========
+; LED4 LOCATED AT PORT-1 PIN-23 
+    LDR     R1, =0x2009C020 ; LOAD ADDRESS OF FIO1DIR (PORT 1 BASE REGISTER)
+    LDR     R2, =0x0800000  ; MOVE BIT MASK (FOR BIT 21) INTO TEMP REGISTER (0x800000 = 0x01 << 23)
+    B       write_exec      ; CALL SUBROUTINE TO EXECUTE YOUR CHANGES
+;
+;
+;
+; EXPORT FUNCTION LOCATION SO THAT C-COMPILER CAN LINK
+    EXPORT dig_out_P11
+dig_out_P11
+;========dig_out_P11========
+; P11 LOCATED AT PORT-0 PIN-18
+    LDR     R0, =0x4002C004 ; LOAD ADDRESS OF PINSEL1 REGISTER
+    MOV.W   R1, #0x00040000 ; MOVE BIT MASK (FOR BIT 18) INTO TEMP REGISTER (0x40000 = 0x01 << 18)
+;                           ; NOTE: THE ABOVE IS A 32-BIT INSTRUCTION BC OF ".W" QUALIFIER
+    LDR     R2, =0x2009C000 ; LOAD ADDRESS OF FIO0DIR0 REGISTER
+    MOV     R3, #0x30       ; FORM BITMASK FOR PINSEL1 REGISTER (clear appropriate bits)   
+    B       dig_out_exec    ; CALL SUBROUTINE TO EXECUTE YOUR CHANGES     
+;
+;
+;
+; EXPORT FUNCTION LOCATION SO THAT C-COMPILER CAN LINK
+    EXPORT P11_write
+P11_write
+;========P11_write=========
+; P11 LOCATED AT PORT-0 PIN-18 
+    LDR     R1, =0x2009C000 ; LOAD ADDRESS OF FIO0DIR0 (PORT 0 BASE REGISTER)
+    MOV.W   R2, #0x040000   ; MOVE BIT MASK (FOR BIT 18) INTO TEMP REGISTER (0x40000 = 0x01 << 18)
+    B       write_exec      ; CALL SUBROUTINE TO EXECUTE YOUR CHANGES
+;
+;
+;
+; EXPORT FUNCTION LOCATION SO THAT C-COMPILER CAN LINK
+    EXPORT dig_out_P12
+dig_out_P12
+;========dig_out_P12========
+; P12 LOCATED AT PORT-0 PIN-17
+    LDR     R0, =0x4002C004 ; LOAD ADDRESS OF PINSEL1 REGISTER
+    MOV.W   R1, #0x00020000 ; MOVE BIT MASK (FOR BIT 17) INTO TEMP REGISTER (0x40000 = 0x01 << 17)
+;                           ; NOTE: THE ABOVE IS A 32-BIT INSTRUCTION BC OF ".W" QUALIFIER
+    LDR     R2, =0x2009C000 ; LOAD ADDRESS OF FIO0DIR0 REGISTER
+    MOV     R3, #0x0C       ; FORM BITMASK FOR PINSEL1 REGISTER (clear appropriate bits)   
+    B       dig_out_exec    ; CALL SUBROUTINE TO EXECUTE YOUR CHANGES   
+;
+;
+;
+; EXPORT FUNCTION LOCATION SO THAT C-COMPILER CAN LINK
+    EXPORT P12_write
+P12_write
+;========P12_write=========
+; P12 LOCATED AT PORT-0 PIN-17
+    LDR     R1, =0x2009C000 ; LOAD ADDRESS OF FIO0DIR0 (PORT 0 BASE REGISTER)
+    MOV.W   R2, #0x020000   ; MOVE BIT MASK (FOR BIT 18) INTO TEMP REGISTER (0x40000 = 0x01 << 18)
+    B       write_exec      ; CALL SUBROUTINE TO EXECUTE YOUR CHANGES
+;
+;
+; EXPORT FUNCTION LOCATION SO THAT C-COMPILER CAN LINK
+    EXPORT dig_out_P13
+dig_out_P13
+;========dig_out_P13========
+; P13 LOCATED AT PORT-0 PIN-15
+    LDR     R0, =0x4002C000 ; LOAD ADDRESS OF PINSEL0 REGISTER
+    MOV.W   R1, #0x00008000 ; MOVE BIT MASK (FOR BIT 15) INTO TEMP REGISTER (0x08000 = 0x01 << 15)
+;                           ; NOTE: THE ABOVE IS A 32-BIT INSTRUCTION BC OF ".W" QUALIFIER
+    LDR     R2, =0x2009C000 ; LOAD ADDRESS OF FIO0DIR0 REGISTER
+    LDR     R3, =0xC0000000 ; FORM BITMASK FOR PINSEL0 REGISTER (clear appropriate bits)   
+    B       dig_out_exec    ; CALL SUBROUTINE TO EXECUTE YOUR CHANGES     
+;
+;
+;
+; EXPORT FUNCTION LOCATION SO THAT C-COMPILER CAN LINK
+    EXPORT P13_write
+P13_write
+;========P13_write=========
+; P13 LOCATED AT PORT-0 PIN-15
+    LDR     R1, =0x2009C000 ; LOAD ADDRESS OF FIO0DIR0 (PORT 0 BASE REGISTER)
+    MOV.W   R2, #0x008000   ; MOVE BIT MASK (FOR BIT 15) INTO TEMP REGISTER (0x08000 = 0x01 << 15)
+    B       write_exec      ; CALL SUBROUTINE TO EXECUTE YOUR CHANGES
+;
+;
+;
+; EXPORT FUNCTION LOCATION SO THAT C-COMPILER CAN LINK
+    EXPORT dig_out_P14
+dig_out_P14
+;========dig_out_P14========
+; P14 LOCATED AT PORT-0 PIN-16
+    LDR     R0, =0x4002C004 ; LOAD ADDRESS OF PINSEL1 REGISTER
+    MOV.W   R1, #0x00010000 ; MOVE BIT MASK (FOR BIT 16) INTO TEMP REGISTER (0x10000 = 0x01 << 16)
+;                           ; NOTE: THE ABOVE IS A 32-BIT INSTRUCTION BC OF ".W" QUALIFIER
+    LDR     R2, =0x2009C000 ; LOAD ADDRESS OF FIO0DIR0 REGISTER
+    MOV     R3, #0x03       ; FORM BITMASK FOR PINSEL1 REGISTER (clear appropriate bits)   
+    B       dig_out_exec    ; CALL SUBROUTINE TO EXECUTE YOUR CHANGES     
+;
+;
+;
+; EXPORT FUNCTION LOCATION SO THAT C-COMPILER CAN LINK
+    EXPORT P14_write
+P14_write
+;========P14_write=========
+; P14 LOCATED AT PORT-0 PIN-16
+    LDR     R1, =0x2009C000 ; LOAD ADDRESS OF FIO0DIR0 (PORT 0 BASE REGISTER)
+    MOV.W   R2, #0x010000   ; MOVE BIT MASK (FOR BIT 16) INTO TEMP REGISTER (0x10000 = 0x01 << 16)
+    B       write_exec      ; CALL SUBROUTINE TO EXECUTE YOUR CHANGES
+;
+;
+;
+; EXPORT FUNCTION LOCATION SO THAT C-COMPILER CAN LINK
+    EXPORT dig_out_P15
+dig_out_P15
+;========dig_out_P15========
+; P15 LOCATED AT PORT-0 PIN-23
+    LDR     R0, =0x4002C004 ; LOAD ADDRESS OF PINSEL1 REGISTER
+    LDR     R1, =0x00800000 ; MOVE BIT MASK (FOR BIT 23) INTO TEMP REGISTER (0x800000 = 0x01 << 23)
+    LDR     R2, =0x2009C000 ; LOAD ADDRESS OF FIO0DIR0 REGISTER
+    MOV.W   R3, #0xC000     ; FORM BITMASK FOR PINSEL1 REGISTER (clear appropriate bits)
+;                           ; NOTE: THE ABOVE IS A 32-BIT INSTRUCTION BC OF ".W" QUALIFIER   
+    B       dig_out_exec    ; CALL SUBROUTINE TO EXECUTE YOUR CHANGES     
+;
+;
+;
+; EXPORT FUNCTION LOCATION SO THAT C-COMPILER CAN LINK
+    EXPORT P15_write
+P15_write
+;========P15_write=========
+; P15 LOCATED AT PORT-0 PIN-23
+    LDR     R1, =0x2009C000 ; LOAD ADDRESS OF FIO0DIR0 (PORT 0 BASE REGISTER)
+    MOV.W   R2, #0x0800000  ; MOVE BIT MASK (FOR BIT 23) INTO TEMP REGISTER (0x800000 = 0x01 << 23)
+    B       write_exec      ; CALL SUBROUTINE TO EXECUTE YOUR CHANGES
+;
+;
+;
+; EXPORT FUNCTION LOCATION SO THAT C-COMPILER CAN LINK
+    EXPORT dig_out_P16
+dig_out_P16
+;========dig_out_P16========
+; P16 LOCATED AT PORT-0 PIN-24
+    LDR     R0, =0x4002C004 ; LOAD ADDRESS OF PINSEL1 REGISTER
+    LDR     R1, =0x01000000 ; MOVE BIT MASK (FOR BIT 24) INTO TEMP REGISTER (0x1000000 = 0x01 << 24)
+    LDR     R2, =0x2009C000 ; LOAD ADDRESS OF FIO0DIR0 REGISTER
+    MOV.W   R3, #0x30000    ; FORM BITMASK FOR PINSEL1 REGISTER (clear appropriate bits)
+;                           ; NOTE: THE ABOVE IS A 32-BIT INSTRUCTION BC OF ".W" QUALIFIER   
+    B       dig_out_exec    ; CALL SUBROUTINE TO EXECUTE YOUR CHANGES     
+;
+;
+;
+; EXPORT FUNCTION LOCATION SO THAT C-COMPILER CAN LINK
+    EXPORT P16_write
+P16_write
+;========P16_write=========
+; P16 LOCATED AT PORT-0 PIN-24
+    LDR     R1, =0x2009C000 ; LOAD ADDRESS OF FIO0DIR0 (PORT 0 BASE REGISTER)
+    MOV.W   R2, #0x1000000  ; MOVE BIT MASK (FOR BIT 24) INTO TEMP REGISTER (0x1000000 = 0x01 << 24)
+    B       write_exec      ; CALL SUBROUTINE TO EXECUTE YOUR CHANGES
+;
+;
+;
+; EXPORT FUNCTION LOCATION SO THAT C-COMPILER CAN LINK
+    EXPORT dig_out_P17
+dig_out_P17
+;========dig_out_P17========
+; P17 LOCATED AT PORT-0 PIN-25
+    LDR     R0, =0x4002C004 ; LOAD ADDRESS OF PINSEL1 REGISTER
+    LDR     R1, =0x02000000 ; MOVE BIT MASK (FOR BIT 25) INTO TEMP REGISTER (0x1000000 = 0x01 << 25)
+    LDR     R2, =0x2009C000 ; LOAD ADDRESS OF FIO0DIR0 REGISTER
+    MOV.W   R3, #0xC0000    ; FORM BITMASK FOR PINSEL1 REGISTER (clear appropriate bits)
+;                           ; NOTE: THE ABOVE IS A 32-BIT INSTRUCTION BC OF ".W" QUALIFIER   
+    B       dig_out_exec    ; CALL SUBROUTINE TO EXECUTE YOUR CHANGES    
+;
+;
+;
+; EXPORT FUNCTION LOCATION SO THAT C-COMPILER CAN LINK
+    EXPORT P17_write
+P17_write
+;========P17_write=========
+; P17 LOCATED AT PORT-0 PIN-25
+    LDR     R1, =0x2009C000 ; LOAD ADDRESS OF FIO0DIR0 (PORT 0 BASE REGISTER)
+    MOV.W   R2, #0x2000000  ; MOVE BIT MASK (FOR BIT 25) INTO TEMP REGISTER (0x1000000 = 0x01 << 25)
+    B       write_exec      ; CALL SUBROUTINE TO EXECUTE YOUR CHANGES
+;
+;
+;
+dig_out_exec
+;========dig_out_execution========
+; SET PIN FUNCTION TO GPIO
+    LDR     R4, [R0]        ; \ 
+    BIC     R4, R3          ; - APPLY BITMASK FOR PINSELx REGISTER (clear appropriate bits) 
+    STR     R4, [R0]        ; STORE BITMASK IN PINSELx REGISTER
+;
+; SET UP GPIO PORT FOR OUTPUT DIRECTION (WITH SPECIFIED BITMASK IN REGISTER R2)
+    LDR     R6, [R2]        ; \ 
+    ORR     R6, R1          ; - ACQUIRE BITMASK FOR FIOxDIR REGISTER (1 = Output)      
+    STR     R6, [R2]        ; STORE BITMASK IN FIOxDIR REGISTER
+;
+;RETURN TO MAIN
+    BX      LR              ; RETURN TO MAIN USING LINKER REGISTER
+;
+;
+;
+write_exec
+;========write_execution=========                   
+; CLEAR/SET BASED ON INPUT VALUE 
+    CMP     R0, #0          ; VALUE == 0 ?
+    ITE EQ                  ; (IF-THEN-ELSE) ON NEXT TWO INSTRUCTIONS USING "EQ" FLAG
+    STREQ   R2, [R1,#0x1C]  ; if==0, CLEAR BIT
+    STRNE   R2, [R1,#0x18]  ; if==1, SET BIT
+;
+; RETURN TO MAIN
+    BX      LR              ; RETURN TO MAIN USING LINKER REGISTER
+;
+;
+;
+    END
